@@ -3,19 +3,19 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Manage Post</li>
+            <li class="breadcrumb-item active" aria-current="page">Manage User</li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4>Post Lists</h4>
+            <h4>User Lists</h4>
             <hr>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="">
                     @if (request('keyword'))
                         <span class="mb-0">Search By : {{ request('keyword') }}</span>
-                        <a href="{{ route('blog.index') }}"><i class="bi bi-trash text-dark"></i></a>
+                        <a href="{{ route('user.index') }}"><i class="bi bi-trash text-dark"></i></a>
                     @endif
                 </div>
 
@@ -31,39 +31,39 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th class="w-25">Title</th>
-                        <th>Category</th>
-                        <th>Owner</th>
+                        <th class="w-25">Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
                         <th>Control</th>
                         <th>Created</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($blogs as $blog)
+                    @forelse ($users as $user)
                         <tr>
-                            <td>{{ $blog->id }}</td>
+                            <td>{{ $user->id }}</td>
                             <td>
-                                {{ $blog->title }}
+                                {{ $user->name }}
                                 {{-- <br>
-                                <span class="badge bg-secondary">{{ $blog->slag }}</span> --}}
+                                <span class="badge bg-secondary">{{ $user->slag }}</span> --}}
                             </td>
                             <td>
-                                {{ App\Models\Category::find($blog->category_id)->title }}
+                                {{ $user->email }}
                             </td>
                             <td>
-                                {{ App\Models\User::find($blog->user_id)->name }}
+                               {{ $user->role }}
                             </td>
                             <td>
-                                <a href="{{ route('blog.show',$blog->id) }}" class="btn btn-sm btn-outline-dark">
+                                <a href="{{ route('user.show',$user->id) }}" class="btn btn-sm btn-outline-dark">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                @can('update',$blog)
-                                    <a href="{{ route('blog.edit',$blog->id) }}" class="btn btn-sm btn-outline-dark">
+                                @can('update',$user)
+                                    <a href="{{ route('user.edit',$user->id) }}" class="btn btn-sm btn-outline-dark">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @endcan
-                                 @can('delete',$blog)
-                                <form action="{{route('blog.destroy',$blog->id)}}" class="d-inline-block" method="post">
+                                 @can('delete',$user)
+                                <form action="{{route('user.destroy',$user->id)}}" class="d-inline-block" method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-sm btn-outline-dark">
@@ -75,11 +75,11 @@
                             <td>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-calendar"></i>
-                                    {{ $blog->created_at->format("d M Y") }}
+                                    {{ $user->created_at->format("d M Y") }}
                                 </p>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-clock"></i>
-                                    {{ $blog->created_at->format("h : m A") }}
+                                    {{ $user->created_at->format("h : m A") }}
                                 </p>
                             </td>
                         </tr>
@@ -94,7 +94,7 @@
             </table>
 
                 <div class="">
-                    {{ $blogs->onEachSide(1)->links() }}
+                    {{ $users->onEachSide(1)->links() }}
                 </div>
 
         </div>

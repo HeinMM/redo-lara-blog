@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,5 +25,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/test', [App\Http\Controllers\HomeController::class, 'test'])->name('test');
 
-Route::resource('/category',CategoryController::class)->middleware('testing:12')->except('show');
+Route::resource('/category',CategoryController::class)->except('show');
 Route::resource('/blog', BlogController::class);
+Route::resource('/user',UserController::class);

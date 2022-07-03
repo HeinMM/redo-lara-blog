@@ -16,6 +16,7 @@
                     <tr>
                         <th>#</th>
                         <th>Title</th>
+                        <th>Owner</th>
                         <th>Control</th>
                         <th>Created</th>
                     </tr>
@@ -30,30 +31,38 @@
                                 <span class="badge bg-secondary">{{ $category->slag }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('category.edit',$category->id) }}" class="btn btn-sm btn-outline-dark">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form action="{{route('category.destroy',$category->id)}}" class="d-inline-block" method="post">
+                                <p>{{ App\Models\User::find($category->user_id)->name }}</p>
+                            </td>
+                            <td>
+                                @can('update', $category)
+                                    <a href="{{ route('category.edit', $category->id) }}" class="btn btn-sm btn-outline-dark">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                @endcan
+
+                                @can('update', $category)
+                                    <form action="{{ route('category.destroy', $category->id) }}" class="d-inline-block"
+                                        method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-sm btn-outline-dark">
                                             <i class="bi bi-trash3"></i>
                                         </button>
-                                </form>
+                                    </form>
+                                @endcan
                             </td>
                             <td>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-calendar"></i>
-                                    {{ $category->created_at->format("d M Y") }}
+                                    {{ $category->created_at->format('d M Y') }}
                                 </p>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-clock"></i>
-                                    {{ $category->created_at->format("h : m A") }}
+                                    {{ $category->created_at->format('h : m A') }}
                                 </p>
                             </td>
                         </tr>
                     @empty
-
                     @endforelse
                 </tbody>
             </table>

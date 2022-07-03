@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -94,6 +95,10 @@ class BlogController extends Controller
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
 
+        if (Gate::denies('update',$blog)) {
+            return abort(403,"You are not allowed to update");
+        }
+
         $blog->title = $request->title;
         $blog->slag = Str::slug($request->title);
         $blog->description = $request->description;
@@ -127,6 +132,10 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        if (Gate::denies('delete', $blog)) {
+            return abort(403, "You are not allowed to delete");
+        }
+
         if ($blog->featured_image) {
              Storage::delete("public/" . $blog->featured_image);
         }
