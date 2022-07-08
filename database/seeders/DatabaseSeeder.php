@@ -18,15 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
-
-        \App\Models\User::factory()->create([
-            'name' => 'Aung Myat',
-            'email' => 'test@example.com',
-            'password' => Hash::make('asdffdsa')
-        ]);
 
         $this->call([
+            UserSeeder::class,
             CategorySeeder::class,
             BlogSeeder::class,
         ]);

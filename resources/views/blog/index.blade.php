@@ -33,7 +33,11 @@
                         <th>#</th>
                         <th class="w-25">Title</th>
                         <th>Category</th>
-                        <th>Owner</th>
+
+                        @notAuthor()
+                            <th>Owner</th>
+                        @endnotAuthor
+
                         <th>Control</th>
                         <th>Created</th>
                     </tr>
@@ -48,54 +52,61 @@
                                 <span class="badge bg-secondary">{{ $blog->slag }}</span> --}}
                             </td>
                             <td>
-                                {{ App\Models\Category::find($blog->category_id)->title }}
+                                {{ $blog->category->title }}
                             </td>
+
+
+                            @notAuthor()
+                                <td>
+
+                                    {{ $blog->user->name }}
+                                </td>
+                            @endnotAuthor
+
                             <td>
-                                {{ App\Models\User::find($blog->user_id)->name }}
-                            </td>
-                            <td>
-                                <a href="{{ route('blog.show',$blog->id) }}" class="btn btn-sm btn-outline-dark">
+                                <a href="{{ route('blog.show', $blog->id) }}" class="btn btn-sm btn-outline-dark">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                @can('update',$blog)
-                                    <a href="{{ route('blog.edit',$blog->id) }}" class="btn btn-sm btn-outline-dark">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+                                @can('update', $blog)
+                                    <a href="{{ route('blog.edit', $blog->id) }}" class="btn btn-sm btn-outline-dark">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
                                 @endcan
-                                 @can('delete',$blog)
-                                <form action="{{route('blog.destroy',$blog->id)}}" class="d-inline-block" method="post">
+                                @can('delete', $blog)
+                                    <form action="{{ route('blog.destroy', $blog->id) }}" class="d-inline-block"
+                                        method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-sm btn-outline-dark">
                                             <i class="bi bi-trash3"></i>
                                         </button>
-                                </form>
+                                    </form>
                                 @endcan
                             </td>
                             <td>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-calendar"></i>
-                                    {{ $blog->created_at->format("d M Y") }}
+                                    {{ $blog->created_at->format('d M Y') }}
                                 </p>
                                 <p class="small mb-0 text-black-50 ">
                                     <i class="bi bi-clock"></i>
-                                    {{ $blog->created_at->format("h : m A") }}
+                                    {{ $blog->created_at->format('h : m A') }}
                                 </p>
                             </td>
                         </tr>
                     @empty
-                            <tr>
-                                <td colspan="6" class="text-center">There is no post</td>
+                        <tr>
+                            <td colspan="6" class="text-center">There is no post</td>
 
-                            </tr>
+                        </tr>
                     @endforelse
                 </tbody>
 
             </table>
 
-                <div class="">
-                    {{ $blogs->onEachSide(1)->links() }}
-                </div>
+            <div class="">
+                {{ $blogs->onEachSide(1)->links() }}
+            </div>
 
         </div>
     </div>

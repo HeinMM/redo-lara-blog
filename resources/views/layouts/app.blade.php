@@ -61,6 +61,8 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
+                                    <br>
+                                    {{ Auth::user()->role }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -108,7 +110,7 @@
                 showToast("{{ session('status') }}")
             @endif
             </script>
-      
+
 </body>
 
 </html>

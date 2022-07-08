@@ -18,8 +18,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest('id')->get();
-        return view('category.index',compact('categories'));
+        $categories = Category::latest('id')->when(
+            Auth::user()->role === 'author',
+            fn ($q) =>
+            $q->where("user_id", Auth::user()->id)
+        )->get();
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -29,6 +33,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+
         return view('category.create');
     }
 
@@ -45,7 +50,7 @@ class CategoryController extends Controller
         $category->slag = Str::slug($request->title);
         $category->user_id = Auth::user()->id;
         $category->save();
-        return redirect()->route('category.index')->with('status',$category->title.' is added Successfully');
+        return redirect()->route('category.index')->with('status', $category->title . ' is added Successfully');
     }
 
     /**
@@ -67,7 +72,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('category.edit',compact('category'));
+        Gate::authorize('view', $category);
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -86,7 +92,7 @@ class CategoryController extends Controller
         $category->slag = Str::slug($request->title);
         $category->user_id = Auth::user()->id;
         $category->save();
-        return redirect()->route('category.index')->with('status',$category->title.' is updated Successfully');
+        return redirect()->route('category.index')->with('status', $category->title . ' is updated Successfully');
     }
 
     /**
@@ -102,6 +108,6 @@ class CategoryController extends Controller
 
         $categoryName = $category->title;
         $category->delete();
-        return redirect()->route('category.index')->with('status',$categoryName.' is deleted Successfully');
+        return redirect()->route('category.index')->with('status', $categoryName . ' is deleted Successfully');
     }
 }

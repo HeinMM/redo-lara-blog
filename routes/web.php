@@ -25,6 +25,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/test', [App\Http\Controllers\HomeController::class, 'test'])->name('test');
 
-Route::resource('/category',CategoryController::class)->except('show');
-Route::resource('/blog', BlogController::class);
-Route::resource('/user',UserController::class);
+Route::middleware("auth")->group(function () {
+    Route::resource('/category', CategoryController::class)->except('show');
+    Route::resource('/blog', BlogController::class);
+    Route::resource('/user', UserController::class)->middleware('isAdmin');
+});

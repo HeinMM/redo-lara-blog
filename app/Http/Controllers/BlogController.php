@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -19,10 +20,10 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::when(request('keyword'),function($q){
+        $blogs = Blog::when(request('keyword'), function ($q) {
             $keyword = request('keyword');
-            $q->orWhere("title","like", "%$keyword%")->orWhere("description", "like", "%$keyword%");
-        })-> latest('id')->paginate(10)->withQueryString();
+            $q->orWhere("title", "like", "%$keyword%")->orWhere("description", "like", "%$keyword%");
+        })->when(Auth::user()->isAuthor(), fn ($q) => $q->where('user_id', Auth::user()->id))->latest('id')->paginate(10)->withQueryString();
         return view('blog.index', compact('blogs'));
     }
 
@@ -48,13 +49,13 @@ class BlogController extends Controller
         $post->title = $request->title;
         $post->slag = Str::slug($request->title);
         $post->description = $request->description;
-        $post->excerpt = Str::words($request->description,50," ......");
+        $post->excerpt = Str::words($request->description, 50, " ......");
         $post->category_id = $request->category;
         $post->user_id = Auth::user()->id;
 
 
         if ($request->hasFile('featured_image')) {
-            $newName = uniqid()."_featured_image.". $request->file('featured_image')->extension();
+            $newName = uniqid() . "_featured_image." . $request->file('featured_image')->extension();
             $request->file('featured_image')->storeAs('public', $newName);
 
             $post->featured_image = $newName;
@@ -71,7 +72,8 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blog.show',compact('blog'));
+        Gate::authorize('view',$blog);
+        return view('blog.show', compact('blog'));
     }
 
     /**
@@ -82,6 +84,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
+        Gate::authorize('update', $blog);
         return view('blog.edit', compact('blog'));
     }
 
@@ -95,8 +98,8 @@ class BlogController extends Controller
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
 
-        if (Gate::denies('update',$blog)) {
-            return abort(403,"You are not allowed to update");
+        if (Gate::denies('update', $blog)) {
+            return abort(403, "You are not allowed to update");
         }
 
         $blog->title = $request->title;
@@ -110,7 +113,7 @@ class BlogController extends Controller
         if ($request->hasFile('featured_image')) {
 
 
-            Storage::delete("public/".$blog->featured_image);
+            Storage::delete("public/" . $blog->featured_image);
 
 
             $newName = uniqid() . "_featured_image." . $request->file('featured_image')->extension();
@@ -137,7 +140,7 @@ class BlogController extends Controller
         }
 
         if ($blog->featured_image) {
-             Storage::delete("public/" . $blog->featured_image);
+            Storage::delete("public/" . $blog->featured_image);
         }
 
         $postName = $blog->title;

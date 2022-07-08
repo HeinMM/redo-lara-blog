@@ -16,7 +16,13 @@
                     <tr>
                         <th>#</th>
                         <th>Title</th>
-                        <th>Owner</th>
+
+                        @notAuthor()
+                            <th>Owner</th>
+                        @endnotAuthor
+
+
+
                         <th>Control</th>
                         <th>Created</th>
                     </tr>
@@ -30,9 +36,13 @@
                                 <br>
                                 <span class="badge bg-secondary">{{ $category->slag }}</span>
                             </td>
-                            <td>
-                                <p>{{ App\Models\User::find($category->user_id)->name }}</p>
-                            </td>
+                            @notAuthor()
+                                <td>
+                                    <p>{{ $category->user->name }}</p>
+                                </td>
+                            @endnotAuthor
+
+
                             <td>
                                 @can('update', $category)
                                     <a href="{{ route('category.edit', $category->id) }}" class="btn btn-sm btn-outline-dark">
@@ -40,7 +50,7 @@
                                     </a>
                                 @endcan
 
-                                @can('update', $category)
+                                @can('delete', $category)
                                     <form action="{{ route('category.destroy', $category->id) }}" class="d-inline-block"
                                         method="post">
                                         @csrf

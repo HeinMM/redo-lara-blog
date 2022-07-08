@@ -10,12 +10,22 @@ class CategoryPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user){
+        if ($user->role === "admin" || $user->role === "editor") {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
+
+
+
+
     public function viewAny(User $user)
     {
         //
@@ -30,7 +40,7 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category)
     {
-        //
+        return $user->id === $category->user_id;
     }
 
     /**

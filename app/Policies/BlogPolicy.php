@@ -10,6 +10,13 @@ class BlogPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        if ($user->role === "admin" || $user->role === "editor") {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -30,7 +37,7 @@ class BlogPolicy
      */
     public function view(User $user, Blog $blog)
     {
-        //
+        return $user->id === $blog->user_id;
     }
 
     /**
