@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Models\Photo;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -20,6 +21,7 @@ class BlogController extends Controller
      */
     public function index()
     {
+
         $blogs = Blog::when(request('keyword'), function ($q) {
             $keyword = request('keyword');
             $q->orWhere("title", "like", "%$keyword%")->orWhere("description", "like", "%$keyword%");
@@ -45,6 +47,7 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
+        
         $post = new Blog();
         $post->title = $request->title;
         $post->slag = Str::slug($request->title);
@@ -60,7 +63,23 @@ class BlogController extends Controller
 
             $post->featured_image = $newName;
         }
+
+
+
         $post->save();
+
+
+        foreach ($request->photos as $photo) {
+
+            $newName = uniqid() . "_post_photo." . $photo->extension();
+            $photo->storeAs('public', $newName);
+
+            $photo = new Photo();
+            $photo->post_id = $post->id;
+            $photo->name = $newName;
+            $photo->save();
+        }
+
         return redirect()->route('blog.index')->with('status', $post->title . ' is Created Successfully');
     }
 
