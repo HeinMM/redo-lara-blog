@@ -8,7 +8,7 @@ use App\Models\Nation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,7 +27,11 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
         ]);
 
+        $photos = Storage::allFiles("public");
+        array_shift($photos);//for git ignore
+        Storage::delete($photos);
 
+        echo "\e[96mLight cyan Storage Cleared \n";
 
     }
 }

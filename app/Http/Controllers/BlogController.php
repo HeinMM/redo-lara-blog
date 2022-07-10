@@ -47,7 +47,7 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        
+
         $post = new Blog();
         $post->title = $request->title;
         $post->slag = Str::slug($request->title);
@@ -75,7 +75,7 @@ class BlogController extends Controller
             $photo->storeAs('public', $newName);
 
             $photo = new Photo();
-            $photo->post_id = $post->id;
+            $photo->blog_id = $post->id;
             $photo->name = $newName;
             $photo->save();
         }
@@ -143,6 +143,17 @@ class BlogController extends Controller
 
         $blog->update();
 
+        foreach ($request->photos as $photo) {
+
+            $newName = uniqid() . "_post_photo." . $photo->extension();
+            $photo->storeAs('public', $newName);
+
+            $photo = new Photo();
+            $photo->blog_id = $blog->id;
+            $photo->name = $newName;
+            $photo->save();
+        }
+
         return redirect()->route('blog.index')->with('status', $blog->title . ' is updated Successfully');
     }
 
@@ -163,6 +174,12 @@ class BlogController extends Controller
         }
 
         $postName = $blog->title;
+
+            foreach ($blog->photos as $photo) {
+                Storage::delete("public/".$photo->name);
+                $photo->delete();
+            }
+
         $blog->delete();
         return redirect()->route('blog.index')->with('status', $postName . ' is deleted Successfully');
     }

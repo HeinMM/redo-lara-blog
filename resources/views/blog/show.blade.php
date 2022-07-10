@@ -35,6 +35,9 @@
             <p>
                 {{ $blog->description }}
             </p>
+            @foreach ($blog->photos as $photo)
+                <img src="{{ asset('storage/'.$photo->name) }}" height="100" class="rounded" alt="">
+            @endforeach
             <hr>
             <div class="d-flex justify-content-end">
                 <div class="mx-3">

@@ -27,6 +27,7 @@ class UpdateBlogRequest extends FormRequest
             "title" => "required|unique:blogs,title,".$this->route('blog')->id,
             "category" => "required|exists:categories,id",
             "description" => "required|min:10",
+            "photos.*" => "mimes:jpeg,png|file|max:512",
             "featured_image" => "nullable|mimes:jpeg,png|file|max:512"
         ];
     }
