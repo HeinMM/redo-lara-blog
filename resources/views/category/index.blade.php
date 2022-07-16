@@ -21,6 +21,8 @@
                             <th>Owner</th>
                         @endnotAuthor
 
+                         <th>Post Count</th>
+
 
 
                         <th>Control</th>
@@ -42,6 +44,7 @@
                                 </td>
                             @endnotAuthor
 
+                            <td>{{$category->posts()->count()}}</td>
 
                             <td>
                                 @can('update', $category)

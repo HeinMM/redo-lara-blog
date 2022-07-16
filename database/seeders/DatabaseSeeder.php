@@ -21,17 +21,17 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            NationSeeder::class,
-            UserSeeder::class,
-            CategorySeeder::class,
+            // NationSeeder::class,
+            // UserSeeder::class,
+            // CategorySeeder::class,
             BlogSeeder::class,
         ]);
 
-        $photos = Storage::allFiles("public");
-        array_shift($photos);//for git ignore
-        Storage::delete($photos);
+        // $photos = Storage::allFiles("public");
+        // array_shift($photos);//for git ignore
+        // Storage::delete($photos);
 
-        echo "\e[96mLight cyan Storage Cleared \n";
+        // echo "\e[96mLight cyan Storage Cleared \n";
 
     }
 }

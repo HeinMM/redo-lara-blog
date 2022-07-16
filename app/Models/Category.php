@@ -9,6 +9,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    public function posts(){
+        return $this->hasMany(Blog::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

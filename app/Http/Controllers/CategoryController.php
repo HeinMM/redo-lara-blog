@@ -22,7 +22,7 @@ class CategoryController extends Controller
             Auth::user()->role === 'author',
             fn ($q) =>
             $q->where("user_id", Auth::user()->id)
-        )->get();
+        )->with(['user'])->get();
         return view('category.index', compact('categories'));
     }
 

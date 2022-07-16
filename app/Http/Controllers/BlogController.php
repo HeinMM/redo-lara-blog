@@ -25,7 +25,7 @@ class BlogController extends Controller
         $blogs = Blog::when(request('keyword'), function ($q) {
             $keyword = request('keyword');
             $q->orWhere("title", "like", "%$keyword%")->orWhere("description", "like", "%$keyword%");
-        })->when(Auth::user()->isAuthor(), fn ($q) => $q->where('user_id', Auth::user()->id))->latest('id')->paginate(10)->withQueryString();
+        })->when(Auth::user()->isAuthor(), fn ($q) => $q->where('user_id', Auth::user()->id))->latest('id')->with(["category","user"])->paginate(10)->withQueryString();
         return view('blog.index', compact('blogs'));
     }
 

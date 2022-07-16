@@ -38,6 +38,8 @@
                             <th>Owner</th>
                         @endnotAuthor
 
+                       
+
                         <th>Control</th>
                         <th>Created</th>
                     </tr>
@@ -62,6 +64,8 @@
                                     {{ $blog->user->name }}
                                 </td>
                             @endnotAuthor
+
+                        
 
                             <td>
                                 <a href="{{ route('blog.show', $blog->id) }}" class="btn btn-sm btn-outline-dark">
