@@ -6,6 +6,7 @@ use App\Http\Controllers\NationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,4 +39,6 @@ Route::middleware("auth")->group(function () {
     Route::resource('/user', UserController::class)->middleware('isAdmin');
     Route::resource('/nation',NationController::class);
     Route::resource('/photo',PhotoController::class);
+    Route::resource('/profile', ProfileController::class);
 });
+

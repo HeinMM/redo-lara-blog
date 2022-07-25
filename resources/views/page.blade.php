@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 ">
                 <h1 class="text-center">Blog Posts</h1>
-                <div class=" d-flex justify-content-end">
+                <div class=" d-flex justify-content-center">
                     <form action="" class="my-3" name="keyword">
                         <div class="input-group ">
                             <input type="text" name="keyword" class="form-control" value="{{ request('keyword') }}">
@@ -21,6 +21,11 @@
                 @forelse ($posts as $post)
                     <div class="card mb-3">
                         <div class="card-body">
+                            @isset($post->featured_image)
+                                <div class="text-center">
+                                    <img src="{{ asset('storage/'.$post->featured_image) }}" class="feature-photo" alt="">
+                                </div>
+                            @endisset
                             <h3>{{ $post->title }}</h3>
                             <a href="{{ route('page.category', $post->category->slag) }}">
                                 <span class="badge bg-secondary">
@@ -57,5 +62,8 @@
                 {{ $posts->onEachSide(1)->links() }}
             </div>
         </div>
+    </div>
+
+    
     </div>
 @endsection

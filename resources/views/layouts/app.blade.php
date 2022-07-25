@@ -57,6 +57,10 @@
                                 </li>
                             @endif
                         @else
+                             <div class="d-flex justify-content-center align-items-center">
+                                 @isset(Auth::user()->profile->name)
+                                     <img class="mb-0" src="{{ asset("storage/".Auth::user()->profile->name) }}" height="40" width="40" alt="">
+                                 @endisset
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -77,6 +81,7 @@
                                     </form>
                                 </div>
                             </li>
+                             </div>
                         @endguest
                     </ul>
                 </div>

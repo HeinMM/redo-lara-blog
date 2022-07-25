@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Blog;
+use App\Models\Profile;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BlogSeeder extends Seeder
+class ProfileSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,11 @@ class BlogSeeder extends Seeder
      */
     public function run()
     {
-        Blog::factory(100)->create();
+        for ($i=1; $i < 14 ; $i++) {
+            Profile::factory()->create([
+                "name" => "index.png",
+                "user_id" => $i
+            ]);
+        }
     }
 }

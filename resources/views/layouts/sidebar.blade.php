@@ -23,3 +23,10 @@
 </div>
 @endadmin
 
+<p class="small text-black-50 mb-1">Manage Profile</p>
+<div class="list-group mb-3">
+    <a class="list-group-item list-group-item-action" href="{{ route('profile.index') }}">My Profile</a>
+</div>
+
+
+
