@@ -76,21 +76,35 @@
                 <div class="card-body">
                     <h3>Comment</h3>
 
-                    <form action="" method="POST">
+                    @auth()
+                        <form action="{{ route('comment.store', $post->id) }}" method="POST">
+                        @csrf
                         <div class="mb-3 ">
-                            <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
+                            <textarea name="text" id="text" cols="30" rows="10" class="form-control"></textarea>
                             <div class="text-end">
                                 <button class="mt-3 btn btn-primary ">Upload</button>
                             </div>
                         </div>
                     </form>
+                    @endauth
+                    @guest()
+                            <div class="mb-3 text-center">
+                                <button class="mt-3 btn btn-primary ">Login</button>
+                            </div>
+                    @endguest
 
-                    <div class="border p-3">
-                        <h5>User Name</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium doloribus suscipit
-                                corporis nisi. Vel molestiae sunt facere repellat cumque commodi libero,
-                                porro, optio quasi exercitationem necessitatibus asperiores alias, unde eveniet?</p>
+
+                    @forelse ($post->comments as $comment)
+                        <div class="border p-3">
+                            <h5>{{ $comment->name }}</h5>
+                            <p>{{ $comment->text }}</p>
+                        </div>
+                    @empty
+                    <div>
+                        <p class="">There is no comment</p>
                     </div>
+                    @endforelse
+
                 </div>
             </div>
         </div>

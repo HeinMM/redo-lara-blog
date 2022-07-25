@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PhotoController;
@@ -40,5 +41,8 @@ Route::middleware("auth")->group(function () {
     Route::resource('/nation',NationController::class);
     Route::resource('/photo',PhotoController::class);
     Route::resource('/profile', ProfileController::class);
+    Route::post('/comment/{id}',[CommentController::class,'store'])->name('comment.store');
 });
+
+// Route::resource('/comment', CommentController::class);
 

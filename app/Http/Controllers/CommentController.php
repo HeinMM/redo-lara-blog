@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -15,7 +16,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        return view('detail');
     }
 
     /**
@@ -25,7 +26,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        //
+        return view('detail');
     }
 
     /**
@@ -34,9 +35,16 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request,$id)
     {
-        //
+
+        $comment = new Comment();
+        $comment->post_id = $id;
+        $comment->name = Auth::user()->name;
+        $comment->text = $request->text;
+        $comment->save();
+
+        return redirect()->back()->with('status',  'Comment is Uploaded Successfully');
     }
 
     /**
